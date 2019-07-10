@@ -1,8 +1,9 @@
 //jshint esversion:6
 
+//install nmp in terminal or hyper then require them here
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose'); //Install Mongoose in hpyer then require it
+const mongoose = require('mongoose');
 const _ = require("lodash");
 
 // const date = require(__dirname + "/date.js");
@@ -22,7 +23,7 @@ app.use(express.static("public"));
 mongoose.connect("mongodb+srv://admin-quang:test123@cluster0-lztzd.mongodb.net/todolistDB", {
   useNewUrlParser: true,
   useFindAndModify: false
-});
+}); //replace mongoose local ("mongodb://localhost27017/(databaseName)") conncection with mongoose server
 
 //Create an item database
 const itemsSchema = new mongoose.Schema({
