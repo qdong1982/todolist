@@ -20,7 +20,7 @@ app.use(express.static("public"));
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
 // const workItems = [];
 //Instead of pushing the item into the items const, we will use mongoose.
-mongoose.connect("mongodb+srv://admin-quang:test123@cluster0-lztzd.mongodb.net/todolistDB", {
+mongoose.connect("mongodb+srv://admin-quang:test123456@cluster0-lztzd.mongodb.net/todolistDB", {
   useNewUrlParser: true,
   useFindAndModify: false
 }); //replace mongoose local ("mongodb://localhost27017/(databaseName)") conncection with mongoose server
@@ -55,12 +55,12 @@ const listSchema = new mongoose.Schema({
 
 const List = mongoose.model('List', listSchema);
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
 
   // const day = date.getDate();
-  Item.find({}, function(err, foundItems) {
+  Item.find({}, function (err, foundItems) {
     if (foundItems.length === 0) {
-      Item.insertMany(defaultItems, function(err) {
+      Item.insertMany(defaultItems, function (err) {
         if (err) {
           console.log(err);
         } else {
@@ -79,7 +79,7 @@ app.get("/", function(req, res) {
 
 });
 
-app.post("/", function(req, res) {
+app.post("/", function (req, res) {
 
   const itemName = req.body.newItem;
   const listName = req.body.list;
@@ -94,7 +94,7 @@ app.post("/", function(req, res) {
   } else {
     List.findOne({
       name: listName
-    }, function(err, foundList) {
+    }, function (err, foundList) {
       foundList.items.push(item);
       foundList.save();
       res.redirect("/" + listName);
@@ -112,13 +112,13 @@ app.post("/", function(req, res) {
 });
 
 //Express Route Parameters
-app.get('/:customListName', function(req, res) {
+app.get('/:customListName', function (req, res) {
 
   const customListName = _.capitalize(req.params.customListName);
 
   List.findOne({
     name: customListName
-  }, function(err, foundList) {
+  }, function (err, foundList) {
     if (!err) {
       if (!foundList) {
         //Create a new list
@@ -144,13 +144,13 @@ app.get('/:customListName', function(req, res) {
 
 });
 
-app.post('/delete', function(req, res) {
+app.post('/delete', function (req, res) {
   const checkItemId = req.body.checkbox;
   const listName = req.body.listName;
   //check if the delete is on Today or customListName
 
   if (listName === "Today") {
-    Item.findByIdAndRemove(checkItemId, function(err) {
+    Item.findByIdAndRemove(checkItemId, function (err) {
       if (!err) {
         console.log("Successfully deleted checked item");
         res.redirect('/');
@@ -167,7 +167,7 @@ app.post('/delete', function(req, res) {
           _id: checkItemId
         }
       }
-    }, function(err, foundList) {
+    }, function (err, foundList) {
       if (!err) {
         res.redirect("/" + listName);
       }
@@ -176,14 +176,14 @@ app.post('/delete', function(req, res) {
 
 });
 
-app.get("/work", function(req, res) {
+app.get("/work", function (req, res) {
   res.render("list", {
     listTitle: "Work List",
     newListItems: workItems
   });
 });
 
-app.get("/about", function(req, res) {
+app.get("/about", function (req, res) {
   res.render("about");
 });
 
@@ -192,6 +192,6 @@ if (port == null || port == "") {
   port = 3000;
 }
 
-app.listen(port, function() {
+app.listen(port, function () {
   console.log("Server has started Successfully");
 });
